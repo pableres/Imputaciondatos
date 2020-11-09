@@ -1,0 +1,26 @@
+#imputación casos perdidos.
+
+library(palmerpenguins)
+library(missForest)
+
+#cargamos datos
+data(package = 'palmerpenguins')
+head(penguins)
+df<-as.data.frame(penguins)
+View(df)
+
+sapply(df, class)
+#si hubiera que hacer cambios Inv <- lapply(Inv, as.ordered)
+
+#hacemos la imputación
+imp <- missForest(df, verbose = TRUE, variablewise = FALSE)
+imp$OOBerror
+imp <- missForest(df, verbose = TRUE, variablewise = TRUE)
+imp$OOBerror
+sapply(df, class)
+
+dflimpio<-as.data.frame(imp$ximp)
+View(dflimpio)
+
+comparacion<-cbind(df$body_mass_g,df$sex,dflimpio$sex)
+View(comparacion)
